@@ -3,6 +3,11 @@
 icon: fas fa-info-circle
 order: 4
 ---
+<p>
+<a href="assets/img/favicons/header-background-onepiece.jpg" class="popup img-link"> 
+<img src="assets/img/favicons/header-background-onepiece.jpg" alt="Introduction Image" width="980" height="380" loading="lazy">
+</a>
+</p>
 
 ## Biografia
 
@@ -18,8 +23,8 @@ Inglês - Avançado | Português - Nativo
 
 ### Cisco:
 <ul>
-    Endpoint Security
-    Introduction to Cybersecuity
-    Networking Basics
+    <li>Endpoint Security</li>
+    <li>Introduction to Cybersecuity</li>
+    <li>Networking Basics</li>
 </ul>
 
