@@ -16,7 +16,7 @@ timezone:
 
 title: BernaSec # the main title
 
-tagline: OffSec & Pentest # it will display as the subtitle
+tagline: OffSec & Pentest enthusiast # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   A minimal, responsive and feature-rich Jekyll theme for technical writing.
@@ -26,10 +26,7 @@ description: >- # used by seo meta and the atom feed
 url: "https://BernaSec.github.io"
 
 github:
-  username: github_username # change to your GitHub username
-
-twitter:
-  username: twitter_username # change to your Twitter username
+  username: BernasSec # change to your GitHub username
 
 social:
   # Change to your full name.
@@ -42,7 +39,7 @@ social:
     - https://github.com/BernaSec # change to your GitHub homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
-    # - https://www.linkedin.com/in/username
+    - https://www.linkedin.com/in/bernardo-florentino
 
 # Site Verification Settings
 webmaster_verifications:
