@@ -19,12 +19,3 @@ I am **Bernardo Florentino**, an student of Information Security, pentester aspi
 
 Inglês - Avançado | Português - Nativo
 
-## Cursos & Certificações
-
-### Cisco:
-<ul>
-    <li>Endpoint Security</li>
-    <li>Introduction to Cybersecuity</li>
-    <li>Networking Basics</li>
-</ul>
-
