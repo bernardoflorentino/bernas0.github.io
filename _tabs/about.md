@@ -4,8 +4,8 @@ icon: fas fa-info-circle
 order: 1
 ---
 <p>
-<a href="assets/img/favicons/header-background-onepiece.jpg" class="popup img-link"> 
-<img src="assets/img/favicons/header-background-onepiece.jpg" alt="Introduction Image" width="980" height="380" loading="lazy">
+<a href="assets\img\favicons\one-piece.png" class="popup img-link"> 
+<img src="assets\img\favicons\one-piece.png" alt="Introduction Image" width="980" height="380" loading="lazy">
 </a>
 </p>
 
