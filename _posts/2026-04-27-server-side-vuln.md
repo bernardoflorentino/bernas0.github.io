@@ -157,5 +157,100 @@ Problema:
 	*"This lab has a stock check feature which fetches data from an internal system.
 	To solve the lab, use the stock check functionality to scan the internal `192.168.0.X` range for an admin interface on port `8080`, then use it to delete the user `carlos`."*
 
+Aqui vamos fazer igualmente o outro, utilizando o F12 para inspecionar a chamada do stockApi e ver os ips que temos para trabalhar.
 
+![[Pasted image 20260428083421.png]]
+
+Agora vamos precisar passar um scan nessa rede e descobrir qual vai conseguir acessar, mandando a mesma requisição para os 254 hosts disponiveis da rede, para isso é possivel utilizar os payloads ja prontos feitos pelo burpsuite passando a requisição e o range de ip que temos para scanear, a partir disso é possível achar o ip que deu 200 como resposta e acessa-lo.
+
+```
+Request:
+"http://192.168.0.$1$:8080/" até ".254"
+	|
+	V
+Procure por:
+	HTTP 1.0 200 OK ou 404 -> Altere para /admin
+```
+
+Agora só acessar e deletar usando a mesma técnica de antes de passar o delete direto na URL e voltar para o painel de admin.
+
+
+# File upload
+
+É uma vulnerabilidade ocasionada pela falta de validação do arquivo upado no web-site, sem validação do tipo, nome, tamanho et al.  Isso liberado pode se tornar um shell remoto em uma unica falha de validação de arquivo, aumentar as despesas se for colocado um arquivo gigante já que armazenamento custa dinheiro e o usuario pode utilizar o quanto ele quiser.
+O pior caso é relamente a de um shell remoto, que é vindo de arquivos .py .php ou java. com isso é possivel ter dominio de todo o server.
+```
+Exemplo:
+
+Web-shell apenas com 1 linha -
+	<?php echo file_get_contents('/path/to/target/file'); ?>
+
+Mais refinado:
+	<?php echo system($_GET['command']); ?>
+```
+
+### Lab 1:
+**Problema:**
+>*"To solve the lab, upload a basic PHP web shell and use it to exfiltrate the contents of the file `/home/carlos/secret`. Submit this secret using the button provided in the lab banner.
+>You can log in to your own account using the following credentials: `wiener:peter`"*
+
+Efetuamos o login com as nossas credenciais, upload de avatar agora esta liberado e como ele ja disse nao tem nehuma validação de tipo ou qualquer defesa contras fulnerabilidade de upload.
+Criamos um arquivo .php em nosso proprio sistema e colocams um simples web-shell puxando as informações que queremos do usuario e a adicionamos.
+<a href="assets\img\server-side-vuln-pts\file-upload-lab1-1.webp" class="popup img-link"> 
+<img src="assets\img\server-side-vuln-pts\file-upload-lab1-1.webp" alt="Introduction Image" width="980" height="380" loading="lazy">
+</a>
+
+No burp utilizando proxy -> http histoy é possivel que realmente funcionou
+<a href="assets\img\server-side-vuln-pts\file-upload-lab1-1.webp" class="popup img-link"> 
+<img src="assets\img\server-side-vuln-pts\file-upload-lab1-1.webp" alt="Introduction Image" width="980" height="380" loading="lazy">
+</a>
+
+Agora so recarregar a página e procurar pela chamada buscando no exploit e ver a resposta do site.
+![[Pasted image 20260428101417.png]]
+
+## Explorando defesas fracas
+
+Falha de tipo de arquivos:
+É quando há uma validação no type-content verificando se é igual o mime type da requisição assim fazendo a validação o problema é que a gente consegue mudar esse mime type dentro do burp repeater e bypassar essa defesa
+
+### Lab 2 (Web shell upload via content-type):
+
+**Problema:**
+>*"This lab contains a vulnerable image upload function. It attempts to prevent users from uploading unexpected file types, but relies on checking user-controllable input to verify this.
+>To solve the lab, upload a basic PHP web shell and use it to exfiltrate the contents of the file `/home/carlos/secret`. Submit this secret using the button provided in the lab banner.
+>You can log in to your own account using the following credentials: `wiener:peter`"*
+
+Vamos utilizar novamente o Burp repeater para ver oque está acontecendo, fiz o upload do exploit sendo ele agora um .jpg, para conseguir até o servidor onde agora está armazenado lembrando que sempre que a gente restaurar a página tem um GET puxando as informações dessa "imagem".
+![[Pasted image 20260428105710.png]]
+
+Para que funcione e nao seja apenas um blank de informações vamos precisar ou alterar seu content-type ou mais fácil somente alterar o nome pois a verificação está no front-end e nao no servidor.
+![[Pasted image 20260428105727.png]]
+
+Fazendo a troca ja conseguimos visualizar a resposta correta do /secret que queriamos.
+![[Pasted image 20260428105841.png]]
+
+
+## OS Command Injection
+### Sobre:
+
+### Lab:
+
+**Problema:**
+>*"This lab contains an OS command injection vulnerability in the product stock checker.
+>The application executes a shell command containing user-supplied product and store IDs, and returns the raw output from the command in its response.
+>To solve the lab, execute the `whoami` command to determine the name of the current user."*
+
+Vamos utilizar o burp repeater, entramos em qualuqer página e vemos oque está acontecendo, vejo um POST no stock o unico voou verificar e acho o meio por onde vamos conseguir realizar o ataque.
+![[Pasted image 20260428115242.png]]
+
+Mudando os parametros aqui não ia dar certo utilizar o & coloquei | (pipe), para passar o comando que foi requisitado no problema.
+![[Pasted image 20260428115313.png]]
+
+Pronto está feito o sorvetinho, proximo.
+
+
+# Considerações
+
+Uma trilha muito bem desenvolvida, o mais interessante da academia é que realmente da pra por a mão na massa logo após a explicação e isso faz fixar muito mais o conteúdo, considero um ponto extramamente positivo além de que eles não pegam em sua mão e te ensinam onde achar a resposta tem que quebrar um pouquinho a cabeça, particurlamente prefiro assim do que outras plataformas onde basta copiar e colar do texto a reposta mas ainda tem dicas e solução da propria comunidade que é disponibilizado se você precisar de um empurrãozinho.
+Falo também que o Burpsuite em sua funcionalidade para vulnerabilidade web, é a melhor ferramenta que ja usei simples, fácil e eficiente. Gostaria de usar a versão pro, para saber como funciona algums payloads e dns proprios deles que facilitam ainda mais.
 
